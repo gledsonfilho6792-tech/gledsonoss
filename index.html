@@ -2,34 +2,45 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>GledsonOS</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
   --bg:#ffffff;--bg2:#f8f8f6;--bg3:#f1efe8;
   --txt:#1a1a1a;--txt2:#666660;--txt3:#999990;
-  --border:rgba(0,0,0,0.12);--border2:rgba(0,0,0,0.22);
+  --border:rgba(0,0,0,0.11);--border2:rgba(0,0,0,0.22);
   --accent:#1D9E75;--accent-l:#E1F5EE;--accent-d:#0F6E56;
   --warn:#BA7517;--warn-l:#FAEEDA;
   --danger:#A32D2D;--danger-l:#FCEBEB;
   --blue:#185FA5;--blue-l:#E6F1FB;
   --purple:#534AB7;--purple-l:#EEEDFE;
   --rad:8px;--radlg:12px;
+  --nav-h:64px;
 }
 @media(prefers-color-scheme:dark){
   :root{
     --bg:#1c1c1a;--bg2:#242422;--bg3:#2a2a28;
     --txt:#f0ede8;--txt2:#a0a09a;--txt3:#666660;
     --border:rgba(255,255,255,0.1);--border2:rgba(255,255,255,0.2);
-    --accent:#1D9E75;--accent-l:#0a2e1f;--accent-d:#5DCAA5;
+    --accent-l:#0a2e1f;--accent-d:#5DCAA5;
     --warn-l:#2a1e06;--danger-l:#2a0f0f;
     --blue-l:#0a1a2e;--purple-l:#1a1630;
   }
 }
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--txt);background:var(--bg3);display:flex;height:100vh;overflow:hidden}
-.sidebar{width:192px;min-width:192px;background:var(--bg2);border-right:0.5px solid var(--border);display:flex;flex-direction:column;padding:14px 0}
+html,body{height:100%;overflow:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--txt);background:var(--bg3)}
+
+/* ── LAYOUT DESKTOP ── */
+.app{display:flex;height:100vh;overflow:hidden}
+
+.sidebar{
+  width:192px;min-width:192px;background:var(--bg2);
+  border-right:0.5px solid var(--border);
+  display:flex;flex-direction:column;padding:14px 0;
+  transition:transform .25s ease;
+}
 .logo{font-size:14px;font-weight:600;padding:0 14px 14px;border-bottom:0.5px solid var(--border);margin-bottom:8px;display:flex;align-items:center;gap:8px;color:var(--txt)}
 .logo i{color:var(--accent);font-size:20px}
 .nav-item{display:flex;align-items:center;gap:9px;padding:9px 14px;font-size:13px;color:var(--txt2);cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:all .15s}
@@ -37,53 +48,68 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:va
 .nav-item.active{color:var(--accent-d);background:var(--accent-l);font-weight:500}
 .nav-item.active i{color:var(--accent)}
 .nav-item i{font-size:16px}
-.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.topbar{background:var(--bg);border-bottom:0.5px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between}
+
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.topbar{background:var(--bg);border-bottom:0.5px solid var(--border);padding:12px 18px;display:flex;align-items:center;gap:10px;justify-content:space-between;flex-shrink:0}
+.topbar-left{display:flex;align-items:center;gap:10px}
 .topbar-title{font-size:15px;font-weight:500;color:var(--txt)}
 .topbar-date{font-size:12px;color:var(--txt3)}
-.content{flex:1;overflow-y:auto;padding:16px 20px;background:var(--bg3)}
+.menu-toggle{display:none;background:none;border:none;cursor:pointer;color:var(--txt);font-size:20px;padding:4px}
+
+.content{flex:1;overflow-y:auto;padding:16px 18px;background:var(--bg3);-webkit-overflow-scrolling:touch}
 .page{display:none}.page.active{display:block}
-.card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radlg);padding:14px 16px;margin-bottom:12px}
-.card-title{font-size:11px;font-weight:500;color:var(--txt3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+
+/* ── BOTTOM NAV MOBILE ── */
+.bottom-nav{display:none}
+
+/* ── OVERLAY ── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:99}
+.overlay.show{display:block}
+
+/* ── CARDS ── */
+.card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radlg);padding:14px 15px;margin-bottom:11px}
+.card-title{font-size:11px;font-weight:500;color:var(--txt3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:9px;display:flex;align-items:center;gap:6px}
 .card-title i{font-size:14px}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;margin-bottom:12px}
-.grid4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:11px;margin-bottom:12px}
-.stat-num{font-size:26px;font-weight:500;line-height:1;color:var(--txt)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:11px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:11px}
+.grid4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:11px}
+.stat-num{font-size:24px;font-weight:500;line-height:1;color:var(--txt)}
 .stat-sub{font-size:11px;color:var(--txt3);margin-top:3px}
+.progress-bar{height:5px;background:var(--bg3);border-radius:3px;overflow:hidden;margin-top:7px}
+.progress-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .4s}
 .tag{display:inline-flex;align-items:center;font-size:10px;padding:2px 7px;border-radius:20px;font-weight:500}
 .tag-green{background:var(--accent-l);color:var(--accent-d)}
 .tag-amber{background:var(--warn-l);color:var(--warn)}
 .tag-red{background:var(--danger-l);color:var(--danger)}
 .tag-blue{background:var(--blue-l);color:var(--blue)}
-.task-item{display:flex;align-items:flex-start;gap:9px;padding:8px 0;border-bottom:0.5px solid var(--border);cursor:pointer}
+.task-item{display:flex;align-items:flex-start;gap:9px;padding:9px 0;border-bottom:0.5px solid var(--border);cursor:pointer}
 .task-item:last-child{border-bottom:none}
-.task-cb{width:16px;height:16px;min-width:16px;border:1.5px solid var(--border2);border-radius:4px;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.task-cb{width:18px;height:18px;min-width:18px;border:1.5px solid var(--border2);border-radius:5px;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .15s}
 .task-cb.done{background:var(--accent);border-color:var(--accent)}
-.task-cb.done i{color:#fff;font-size:10px;display:block!important}
+.task-cb.done i{color:#fff;font-size:11px;display:block!important}
 .task-cb i{display:none}
 .task-label{font-size:13px;line-height:1.5;flex:1;color:var(--txt)}
 .task-label.done{text-decoration:line-through;color:var(--txt3)}
-.p-dot{width:6px;height:6px;border-radius:50%;margin-top:5px;min-width:6px}
+.p-dot{width:6px;height:6px;border-radius:50%;margin-top:6px;min-width:6px}
 .p-alta{background:#E24B4A}.p-media{background:#EF9F27}.p-baixa{background:#639922}
-.day-tabs{display:flex;gap:5px;margin-bottom:12px;flex-wrap:wrap}
-.day-tab{padding:5px 12px;font-size:12px;border-radius:var(--rad);border:0.5px solid var(--border);background:var(--bg);cursor:pointer;color:var(--txt2);transition:all .15s}
+.del-btn{background:none;border:none;cursor:pointer;color:var(--txt3);padding:3px 5px;border-radius:4px;font-size:13px;opacity:0;transition:opacity .15s;flex-shrink:0}
+.task-item:hover .del-btn{opacity:1}
+.del-btn:hover{color:var(--danger)}
+.day-tabs{display:flex;gap:5px;margin-bottom:11px;flex-wrap:wrap}
+.day-tab{padding:6px 12px;font-size:12px;border-radius:var(--rad);border:0.5px solid var(--border);background:var(--bg);cursor:pointer;color:var(--txt2);transition:all .15s}
 .day-tab:hover{border-color:var(--border2);color:var(--txt)}
 .day-tab.active{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:500}
 .day-tab.today{border-color:var(--accent);color:var(--accent)}
 .add-row{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
-.add-row input,.add-row select{font-size:13px;padding:7px 10px;border:0.5px solid var(--border);border-radius:var(--rad);background:var(--bg);color:var(--txt);outline:none}
-.add-row input{flex:1;min-width:120px}
+.add-row input,.add-row select{font-size:13px;padding:8px 10px;border:0.5px solid var(--border);border-radius:var(--rad);background:var(--bg);color:var(--txt);outline:none;-webkit-appearance:none}
+.add-row input{flex:1;min-width:100px}
 .add-row input:focus,.add-row select:focus{border-color:var(--accent)}
-.btn-sm{padding:7px 14px;font-size:12px;background:var(--accent);color:#fff;border:none;border-radius:var(--rad);cursor:pointer;font-weight:500;display:flex;align-items:center;gap:5px;white-space:nowrap}
+.btn-sm{padding:8px 14px;font-size:13px;background:var(--accent);color:#fff;border:none;border-radius:var(--rad);cursor:pointer;font-weight:500;display:flex;align-items:center;gap:5px;white-space:nowrap;flex-shrink:0}
 .btn-sm:hover{background:var(--accent-d)}
-.btn-ghost{padding:7px 12px;font-size:12px;background:none;color:var(--txt2);border:0.5px solid var(--border);border-radius:var(--rad);cursor:pointer;display:flex;align-items:center;gap:5px}
+.btn-ghost{padding:8px 12px;font-size:12px;background:none;color:var(--txt2);border:0.5px solid var(--border);border-radius:var(--rad);cursor:pointer;display:flex;align-items:center;gap:5px}
 .btn-ghost:hover{background:var(--bg2)}
-.del-btn{background:none;border:none;cursor:pointer;color:var(--txt3);padding:2px 4px;border-radius:3px;font-size:12px;opacity:0;transition:opacity .15s}
-.task-item:hover .del-btn,.habit-row:hover .del-btn{opacity:1}
-.del-btn:hover{color:var(--danger)}
-.progress-bar{height:5px;background:var(--bg3);border-radius:3px;overflow:hidden;margin-top:8px}
-.progress-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .4s}
 .empty-state{text-align:center;color:var(--txt3);font-size:13px;padding:22px 0}
+
 /* POMODORO */
 .pomo-ring{position:relative;width:156px;height:156px;margin:0 auto 16px}
 .pomo-ring svg{width:156px;height:156px;transform:rotate(-90deg)}
@@ -91,207 +117,289 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:va
 .pomo-bg{stroke:var(--bg3)}
 .pomo-prog{stroke:var(--accent);stroke-linecap:round;transition:stroke-dashoffset .95s linear}
 .pomo-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
-.pomo-time{font-size:26px;font-weight:500;line-height:1;color:var(--txt)}
+.pomo-time{font-size:28px;font-weight:500;line-height:1;color:var(--txt)}
 .pomo-lbl{font-size:11px;color:var(--txt3);margin-top:3px}
 .pomo-controls{display:flex;gap:8px;justify-content:center;margin-bottom:14px}
-.pomo-btn{padding:8px 20px;border-radius:var(--rad);border:0.5px solid var(--border2);background:var(--bg);cursor:pointer;font-size:13px;color:var(--txt);display:flex;align-items:center;gap:6px;transition:all .15s}
+.pomo-btn{padding:9px 20px;border-radius:var(--rad);border:0.5px solid var(--border2);background:var(--bg);cursor:pointer;font-size:13px;color:var(--txt);display:flex;align-items:center;gap:6px;transition:all .15s}
 .pomo-btn:hover{background:var(--bg2)}
 .pomo-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
 .pomo-btn.primary:hover{background:var(--accent-d)}
-.pomo-modes{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
-.pomo-mode{padding:5px 12px;border-radius:20px;font-size:11px;border:0.5px solid var(--border);background:var(--bg);cursor:pointer;color:var(--txt2)}
+.pomo-modes{display:flex;gap:6px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+.pomo-mode{padding:6px 13px;border-radius:20px;font-size:12px;border:0.5px solid var(--border);background:var(--bg);cursor:pointer;color:var(--txt2)}
 .pomo-mode.active{background:var(--accent-l);color:var(--accent-d);border-color:var(--accent);font-weight:500}
 .pomo-dots{display:flex;gap:6px;justify-content:center;margin-bottom:4px}
 .pomo-dot{width:8px;height:8px;border-radius:50%;background:var(--border2)}
 .pomo-dot.done{background:var(--accent)}
-.notif-bar{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--accent-l);border-radius:var(--rad);margin-bottom:14px;font-size:12px;color:var(--accent-d)}
-.notif-bar button{font-size:11px;padding:4px 10px;background:var(--accent);color:#fff;border:none;border-radius:var(--rad);cursor:pointer}
+.notif-bar{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--accent-l);border-radius:var(--rad);margin-bottom:13px;font-size:12px;color:var(--accent-d);gap:8px}
+.notif-bar button{font-size:11px;padding:4px 10px;background:var(--accent);color:#fff;border:none;border-radius:var(--rad);cursor:pointer;white-space:nowrap}
+
 /* TREINO */
-.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin-bottom:12px}
-.treino-slot{border:0.5px solid var(--border);border-radius:var(--rad);padding:10px 8px;cursor:pointer;transition:all .15s;text-align:center}
+.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:12px}
+.treino-slot{border:0.5px solid var(--border);border-radius:var(--rad);padding:9px 6px;cursor:pointer;transition:all .15s;text-align:center}
 .treino-slot:hover:not(.rest){border-color:var(--accent)}
 .treino-slot.done{background:var(--accent-l);border-color:var(--accent)}
 .treino-slot.rest{cursor:default;background:var(--bg2)}
-.treino-slot-name{font-size:11px;font-weight:500;margin-top:3px;color:var(--txt)}
+.treino-slot-name{font-size:10px;font-weight:500;margin-top:3px;color:var(--txt);line-height:1.2}
 .treino-slot.done .treino-slot-name{color:var(--accent-d)}
-.treino-slot-detail{font-size:10px;color:var(--txt3);margin-top:2px;line-height:1.3}
+.treino-slot-detail{font-size:9px;color:var(--txt3);margin-top:2px;line-height:1.3}
 .nutrition-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:0.5px solid var(--border)}
 .nutrition-row:last-child{border-bottom:none}
 .nutrition-bar-wrap{flex:1;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden}
 .nutrition-bar-fill{height:100%;border-radius:3px;transition:width .4s}
-.nutrition-label{font-size:12px;font-weight:500;min-width:90px;color:var(--txt)}
-.nutrition-val{font-size:11px;color:var(--txt3);min-width:70px;text-align:right}
+.nutrition-label{font-size:12px;font-weight:500;min-width:88px;color:var(--txt)}
+.nutrition-val{font-size:11px;color:var(--txt3);min-width:68px;text-align:right}
 .habit-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:0.5px solid var(--border)}
 .habit-row:last-child{border-bottom:none}
-.habit-day{width:22px;height:22px;border-radius:4px;border:0.5px solid var(--border);font-size:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--txt3);transition:all .15s}
+.habit-day{width:24px;height:24px;border-radius:5px;border:0.5px solid var(--border);font-size:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--txt3);transition:all .15s}
 .habit-day.done{background:var(--accent);color:#fff;border-color:var(--accent)}
 .habit-day:hover:not(.done){border-color:var(--border2);color:var(--txt)}
+
+/* ── MOBILE ── */
+@media(max-width:680px){
+  html,body{height:100%;height:-webkit-fill-available}
+  .app{flex-direction:column;height:100vh;height:-webkit-fill-available}
+
+  .sidebar{
+    position:fixed;top:0;left:0;bottom:0;z-index:100;
+    width:220px;transform:translateX(-100%);
+    box-shadow:4px 0 20px rgba(0,0,0,0.15);
+  }
+  .sidebar.open{transform:translateX(0)}
+
+  .menu-toggle{display:block}
+
+  .main{flex:1;display:flex;flex-direction:column;overflow:hidden;padding-bottom:var(--nav-h)}
+
+  .content{flex:1;overflow-y:auto;padding:12px 14px;padding-bottom:20px}
+
+  .bottom-nav{
+    display:flex;position:fixed;bottom:0;left:0;right:0;height:var(--nav-h);
+    background:var(--bg);border-top:0.5px solid var(--border);
+    z-index:90;padding-bottom:env(safe-area-inset-bottom);
+  }
+  .bn-item{
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:3px;cursor:pointer;border:none;background:none;color:var(--txt3);
+    font-size:10px;transition:all .15s;padding:6px 4px;
+  }
+  .bn-item i{font-size:22px;transition:all .15s}
+  .bn-item.active{color:var(--accent)}
+  .bn-item.active i{color:var(--accent)}
+  .bn-item span{font-size:10px;font-weight:500}
+
+  /* grid adjustments */
+  .grid4{grid-template-columns:1fr 1fr;gap:8px}
+  .grid3{grid-template-columns:1fr 1fr 1fr;gap:8px}
+  .week-grid{grid-template-columns:repeat(7,1fr);gap:4px}
+  .treino-slot{padding:7px 4px}
+  .treino-slot-name{font-size:9px}
+  .treino-slot-detail{display:none}
+  .treino-slot .tag{display:none}
+
+  .add-row{gap:6px}
+  .add-row select{font-size:12px;padding:7px 6px;max-width:90px}
+
+  .pomo-ring{width:140px;height:140px}
+  .pomo-ring svg{width:140px;height:140px}
+  .pomo-time{font-size:26px}
+
+  .nutrition-label{min-width:80px;font-size:11px}
+  .nutrition-val{min-width:56px;font-size:10px}
+
+  .habit-day{width:28px;height:28px}
+
+  .topbar{padding:10px 14px}
+}
+
+@media(max-width:400px){
+  .grid4{grid-template-columns:1fr 1fr}
+  .stat-num{font-size:20px}
+  .week-grid{gap:3px}
+}
 </style>
 </head>
 <body>
 
-<div class="sidebar">
-  <div class="logo"><i class="ti ti-bolt"></i> GledsonOS</div>
-  <button class="nav-item active" onclick="showPage('hoje')" id="nav-hoje"><i class="ti ti-sun"></i> Hoje</button>
-  <button class="nav-item" onclick="showPage('semana')" id="nav-semana"><i class="ti ti-calendar-week"></i> Semana</button>
-  <button class="nav-item" onclick="showPage('pomodoro')" id="nav-pomodoro"><i class="ti ti-clock"></i> Pomodoro</button>
-  <button class="nav-item" onclick="showPage('treino')" id="nav-treino"><i class="ti ti-run"></i> Treino</button>
-  <button class="nav-item" onclick="showPage('habitos')" id="nav-habitos"><i class="ti ti-repeat"></i> Hábitos</button>
-</div>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
 
-<div class="main">
-  <div class="topbar">
-    <div class="topbar-title" id="page-title">Hoje</div>
-    <div class="topbar-date" id="current-date"></div>
+<div class="app">
+  <!-- SIDEBAR DESKTOP / DRAWER MOBILE -->
+  <div class="sidebar" id="sidebar">
+    <div class="logo"><i class="ti ti-bolt"></i> GledsonOS</div>
+    <button class="nav-item active" onclick="showPage('hoje')" id="nav-hoje"><i class="ti ti-sun"></i> Hoje</button>
+    <button class="nav-item" onclick="showPage('semana')" id="nav-semana"><i class="ti ti-calendar-week"></i> Semana</button>
+    <button class="nav-item" onclick="showPage('pomodoro')" id="nav-pomodoro"><i class="ti ti-clock"></i> Pomodoro</button>
+    <button class="nav-item" onclick="showPage('treino')" id="nav-treino"><i class="ti ti-run"></i> Treino</button>
+    <button class="nav-item" onclick="showPage('habitos')" id="nav-habitos"><i class="ti ti-repeat"></i> Hábitos</button>
   </div>
-  <div class="content">
 
-    <!-- HOJE -->
-    <div class="page active" id="page-hoje">
-      <div class="card">
-        <div class="card-title"><i class="ti ti-target"></i> Foco do dia</div>
-        <div id="foco-display" style="font-size:14px;font-weight:500;cursor:pointer;color:var(--txt3)" onclick="editFoco()">Clique para definir o foco do dia...</div>
-        <input id="foco-input" type="text" placeholder="O que define o sucesso hoje?" style="display:none;width:100%;font-size:14px;padding:7px 10px;border:0.5px solid var(--border);border-radius:var(--rad);background:var(--bg);color:var(--txt);outline:none" onblur="saveFoco()" onkeydown="if(event.key==='Enter')saveFoco()">
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Menu"><i class="ti ti-menu-2"></i></button>
+        <div class="topbar-title" id="page-title">Hoje</div>
       </div>
-      <div class="grid4">
-        <div class="card" style="margin-bottom:0">
-          <div class="stat-num" id="stat-done">0<span style="font-size:14px;color:var(--txt3)">/0</span></div>
-          <div class="stat-sub">tarefas</div>
-          <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
-        </div>
-        <div class="card" style="margin-bottom:0">
-          <div class="stat-num" id="stat-pomos">0</div>
-          <div class="stat-sub">pomodoros</div>
-        </div>
-        <div class="card" style="margin-bottom:0">
-          <div class="stat-num" id="stat-hab">0<span style="font-size:14px;color:var(--txt3)">/0</span></div>
-          <div class="stat-sub">hábitos</div>
-        </div>
-        <div class="card" style="margin-bottom:0">
-          <div class="stat-num" id="stat-treino" style="font-size:13px;line-height:1.4">—</div>
-          <div class="stat-sub">treino hoje</div>
-        </div>
-      </div>
-      <div class="card" style="margin-top:12px">
-        <div class="card-title"><i class="ti ti-list-check"></i> Tarefas de hoje</div>
-        <div id="tarefas-hoje"></div>
-        <div class="add-row">
-          <input type="text" id="task-inp" placeholder="Nova tarefa..." onkeydown="if(event.key==='Enter')addTask()">
-          <select id="task-pri"><option value="alta">Alta</option><option value="media" selected>Média</option><option value="baixa">Baixa</option></select>
-          <select id="task-cat"><option value="negocio">Negócio</option><option value="rotina">Rotina</option><option value="exercicio">Exercício</option><option value="alimentacao">Alimentação</option></select>
-          <button class="btn-sm" onclick="addTask()"><i class="ti ti-plus"></i></button>
-        </div>
-      </div>
+      <div class="topbar-date" id="current-date"></div>
     </div>
 
-    <!-- SEMANA -->
-    <div class="page" id="page-semana">
-      <div class="day-tabs" id="day-tabs"></div>
-      <div class="card">
-        <div class="card-title" id="week-day-lbl"><i class="ti ti-calendar"></i> Tarefas</div>
-        <div id="tarefas-semana"></div>
-        <div class="add-row">
-          <input type="text" id="week-inp" placeholder="Nova tarefa para este dia..." onkeydown="if(event.key==='Enter')addWeekTask()">
-          <select id="week-pri"><option value="alta">Alta</option><option value="media" selected>Média</option><option value="baixa">Baixa</option></select>
-          <button class="btn-sm" onclick="addWeekTask()"><i class="ti ti-plus"></i></button>
-        </div>
-      </div>
-    </div>
+    <div class="content">
 
-    <!-- POMODORO -->
-    <div class="page" id="page-pomodoro">
-      <div id="notif-bar" class="notif-bar" style="display:none">
-        <span><i class="ti ti-bell"></i> Ative notificações para receber alertas no Mac e iPhone</span>
-        <button onclick="requestNotif()">Ativar</button>
+      <!-- HOJE -->
+      <div class="page active" id="page-hoje">
+        <div class="card">
+          <div class="card-title"><i class="ti ti-target"></i> Foco do dia</div>
+          <div id="foco-display" style="font-size:14px;font-weight:500;cursor:pointer;color:var(--txt3);padding:4px 0" onclick="editFoco()">Clique para definir o foco do dia...</div>
+          <input id="foco-input" type="text" placeholder="O que define o sucesso hoje?" style="display:none;width:100%;font-size:14px;padding:8px 10px;border:0.5px solid var(--border);border-radius:var(--rad);background:var(--bg);color:var(--txt);outline:none" onblur="saveFoco()" onkeydown="if(event.key==='Enter')this.blur()">
+        </div>
+        <div class="grid4">
+          <div class="card" style="margin-bottom:0">
+            <div class="stat-num" id="stat-done">0<span style="font-size:13px;color:var(--txt3)">/0</span></div>
+            <div class="stat-sub">tarefas</div>
+            <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+          </div>
+          <div class="card" style="margin-bottom:0">
+            <div class="stat-num" id="stat-pomos">0</div>
+            <div class="stat-sub">pomodoros</div>
+          </div>
+          <div class="card" style="margin-bottom:0">
+            <div class="stat-num" id="stat-hab">0<span style="font-size:13px;color:var(--txt3)">/0</span></div>
+            <div class="stat-sub">hábitos</div>
+          </div>
+          <div class="card" style="margin-bottom:0">
+            <div id="stat-treino" style="font-size:12px;line-height:1.4;font-weight:500;color:var(--txt2)">—</div>
+            <div class="stat-sub">treino</div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:11px">
+          <div class="card-title"><i class="ti ti-list-check"></i> Tarefas de hoje</div>
+          <div id="tarefas-hoje"></div>
+          <div class="add-row">
+            <input type="text" id="task-inp" placeholder="Nova tarefa..." onkeydown="if(event.key==='Enter')addTask()">
+            <select id="task-pri"><option value="alta">Alta</option><option value="media" selected>Média</option><option value="baixa">Baixa</option></select>
+            <select id="task-cat"><option value="negocio">Negócio</option><option value="rotina">Rotina</option><option value="exercicio">Exercício</option><option value="alimentacao">Alimentação</option></select>
+            <button class="btn-sm" onclick="addTask()"><i class="ti ti-plus"></i></button>
+          </div>
+        </div>
       </div>
-      <div class="card" style="max-width:360px;margin:0 auto">
-        <div class="pomo-modes">
-          <button class="pomo-mode active" onclick="setMode('foco',25)" id="mode-foco">Foco 25min</button>
-          <button class="pomo-mode" onclick="setMode('pausa',5)" id="mode-pausa">Pausa 5min</button>
-          <button class="pomo-mode" onclick="setMode('longa',15)" id="mode-longa">Pausa 15min</button>
-        </div>
-        <div class="pomo-ring">
-          <svg viewBox="0 0 156 156"><circle class="pomo-bg" cx="78" cy="78" r="70"/><circle class="pomo-prog" id="pomo-circle" cx="78" cy="78" r="70" stroke-dasharray="439.82" stroke-dashoffset="0"/></svg>
-          <div class="pomo-center"><div class="pomo-time" id="pomo-display">25:00</div><div class="pomo-lbl" id="pomo-status">Pronto</div></div>
-        </div>
-        <div class="pomo-controls">
-          <button class="pomo-btn primary" onclick="togglePomo()" id="pomo-main"><i class="ti ti-player-play"></i> Iniciar</button>
-          <button class="pomo-btn" onclick="resetPomo()"><i class="ti ti-refresh"></i></button>
-        </div>
-        <div class="pomo-dots" id="pomo-dots"></div>
-        <div style="text-align:center;font-size:11px;color:var(--txt3);margin:5px 0 16px" id="pomo-count-lbl">0 pomodoros hoje</div>
-        <div class="card-title"><i class="ti ti-pencil"></i> Focando em</div>
-        <input type="text" id="pomo-task" placeholder="O que você está fazendo agora?" style="width:100%;font-size:13px;padding:7px 10px;border:0.5px solid var(--border);border-radius:var(--rad);background:var(--bg);color:var(--txt);outline:none">
-      </div>
-    </div>
 
-    <!-- TREINO -->
-    <div class="page" id="page-treino">
-      <div class="grid3">
-        <div class="card" style="margin-bottom:0">
-          <div class="card-title"><i class="ti ti-run"></i> Corrida — semana</div>
-          <div class="stat-num" id="km-total">0<span style="font-size:14px"> km</span></div>
-          <div class="stat-sub" id="corridas-count">0 saídas esta semana</div>
-        </div>
-        <div class="card" style="margin-bottom:0">
-          <div class="card-title"><i class="ti ti-barbell"></i> Academia</div>
-          <div class="stat-num" id="gym-total">0<span style="font-size:14px"> treinos</span></div>
-          <div class="stat-sub">esta semana</div>
-        </div>
-        <div class="card" style="margin-bottom:0">
-          <div class="card-title"><i class="ti ti-flame"></i> Streak</div>
-          <div class="stat-num" id="streak-num">0</div>
-          <div class="stat-sub">dias ativos seguidos</div>
+      <!-- SEMANA -->
+      <div class="page" id="page-semana">
+        <div class="day-tabs" id="day-tabs"></div>
+        <div class="card">
+          <div class="card-title" id="week-day-lbl"><i class="ti ti-calendar"></i> Tarefas</div>
+          <div id="tarefas-semana"></div>
+          <div class="add-row">
+            <input type="text" id="week-inp" placeholder="Nova tarefa..." onkeydown="if(event.key==='Enter')addWeekTask()">
+            <select id="week-pri"><option value="alta">Alta</option><option value="media" selected>Média</option><option value="baixa">Baixa</option></select>
+            <button class="btn-sm" onclick="addWeekTask()"><i class="ti ti-plus"></i></button>
+          </div>
         </div>
       </div>
-      <div class="card">
-        <div class="card-title"><i class="ti ti-calendar-week"></i> Plano da semana</div>
-        <div class="week-grid" id="treino-week-grid"></div>
-      </div>
-      <div class="card">
-        <div class="card-title"><i class="ti ti-run"></i> Registrar corrida</div>
-        <div class="add-row">
-          <input type="number" id="km-input" placeholder="Km percorridos" step="0.1" min="0" style="max-width:140px">
-          <input type="text" id="corrida-nota" placeholder="Observação (opcional)">
-          <button class="btn-sm" onclick="logCorrida()"><i class="ti ti-check"></i> Registrar</button>
-        </div>
-        <div id="corridas-log" style="margin-top:10px"></div>
-      </div>
-      <div class="card">
-        <div class="card-title"><i class="ti ti-salad"></i> Nutrição do dia</div>
-        <div id="nutri-rows"></div>
-        <div style="margin-top:10px;display:flex;gap:7px;flex-wrap:wrap" id="nutri-btns"></div>
-      </div>
-    </div>
 
-    <!-- HÁBITOS -->
-    <div class="page" id="page-habitos">
-      <div class="card">
-        <div class="card-title"><i class="ti ti-repeat"></i> Hábitos da semana</div>
-        <div id="habits-list"></div>
-      </div>
-      <div class="card">
-        <div class="card-title"><i class="ti ti-plus"></i> Novo hábito</div>
-        <div class="add-row">
-          <input type="text" id="hab-inp" placeholder="Nome do hábito..." onkeydown="if(event.key==='Enter')addHabit()">
-          <select id="hab-icon">
-            <option value="ti-run">Corrida</option>
-            <option value="ti-barbell">Academia</option>
-            <option value="ti-book">Leitura</option>
-            <option value="ti-droplet">Água</option>
-            <option value="ti-moon">Sono</option>
-            <option value="ti-salad">Alimentação</option>
-            <option value="ti-device-mobile-off">Sem celular</option>
-            <option value="ti-brain">Estudo</option>
-            <option value="ti-chart-line">Negócio</option>
-          </select>
-          <button class="btn-sm" onclick="addHabit()"><i class="ti ti-plus"></i></button>
+      <!-- POMODORO -->
+      <div class="page" id="page-pomodoro">
+        <div id="notif-bar" class="notif-bar" style="display:none">
+          <span><i class="ti ti-bell"></i> Ative notificações para alertas no Mac/iPhone</span>
+          <button onclick="requestNotif()">Ativar</button>
+        </div>
+        <div class="card" style="max-width:380px;margin:0 auto">
+          <div class="pomo-modes">
+            <button class="pomo-mode active" onclick="setMode('foco',25)" id="mode-foco">Foco 25min</button>
+            <button class="pomo-mode" onclick="setMode('pausa',5)" id="mode-pausa">Pausa 5min</button>
+            <button class="pomo-mode" onclick="setMode('longa',15)" id="mode-longa">Longa 15min</button>
+          </div>
+          <div class="pomo-ring">
+            <svg viewBox="0 0 156 156"><circle class="pomo-bg" cx="78" cy="78" r="70"/><circle class="pomo-prog" id="pomo-circle" cx="78" cy="78" r="70" stroke-dasharray="439.82" stroke-dashoffset="0"/></svg>
+            <div class="pomo-center"><div class="pomo-time" id="pomo-display">25:00</div><div class="pomo-lbl" id="pomo-status">Pronto</div></div>
+          </div>
+          <div class="pomo-controls">
+            <button class="pomo-btn primary" onclick="togglePomo()" id="pomo-main"><i class="ti ti-player-play"></i> Iniciar</button>
+            <button class="pomo-btn" onclick="resetPomo()"><i class="ti ti-refresh"></i></button>
+          </div>
+          <div class="pomo-dots" id="pomo-dots"></div>
+          <div style="text-align:center;font-size:11px;color:var(--txt3);margin:5px 0 16px" id="pomo-count-lbl">0 pomodoros hoje</div>
+          <div class="card-title"><i class="ti ti-pencil"></i> Focando em</div>
+          <input type="text" id="pomo-task" placeholder="O que você está fazendo agora?" style="width:100%;font-size:13px;padding:8px 10px;border:0.5px solid var(--border);border-radius:var(--rad);background:var(--bg);color:var(--txt);outline:none">
         </div>
       </div>
-    </div>
 
-  </div>
-</div>
+      <!-- TREINO -->
+      <div class="page" id="page-treino">
+        <div class="grid3">
+          <div class="card" style="margin-bottom:0">
+            <div class="card-title"><i class="ti ti-run"></i> Corrida</div>
+            <div class="stat-num" id="km-total">0<span style="font-size:13px"> km</span></div>
+            <div class="stat-sub" id="corridas-count">0 saídas</div>
+          </div>
+          <div class="card" style="margin-bottom:0">
+            <div class="card-title"><i class="ti ti-barbell"></i> Academia</div>
+            <div class="stat-num" id="gym-total">0<span style="font-size:13px"> treinos</span></div>
+            <div class="stat-sub">esta semana</div>
+          </div>
+          <div class="card" style="margin-bottom:0">
+            <div class="card-title"><i class="ti ti-flame"></i> Streak</div>
+            <div class="stat-num" id="streak-num">0</div>
+            <div class="stat-sub">dias seguidos</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-calendar-week"></i> Plano da semana</div>
+          <div class="week-grid" id="treino-week-grid"></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-run"></i> Registrar corrida</div>
+          <div class="add-row">
+            <input type="number" id="km-input" placeholder="Km" step="0.1" min="0" style="max-width:90px">
+            <input type="text" id="corrida-nota" placeholder="Observação (opcional)">
+            <button class="btn-sm" onclick="logCorrida()"><i class="ti ti-check"></i> OK</button>
+          </div>
+          <div id="corridas-log" style="margin-top:10px"></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-salad"></i> Nutrição do dia</div>
+          <div id="nutri-rows"></div>
+          <div style="margin-top:10px;display:flex;gap:7px;flex-wrap:wrap" id="nutri-btns"></div>
+        </div>
+      </div>
+
+      <!-- HÁBITOS -->
+      <div class="page" id="page-habitos">
+        <div class="card">
+          <div class="card-title"><i class="ti ti-repeat"></i> Hábitos da semana</div>
+          <div id="habits-list"></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-plus"></i> Novo hábito</div>
+          <div class="add-row">
+            <input type="text" id="hab-inp" placeholder="Nome do hábito..." onkeydown="if(event.key==='Enter')addHabit()">
+            <select id="hab-icon">
+              <option value="ti-run">Corrida</option>
+              <option value="ti-barbell">Academia</option>
+              <option value="ti-book">Leitura</option>
+              <option value="ti-droplet">Água</option>
+              <option value="ti-moon">Sono</option>
+              <option value="ti-salad">Alimentação</option>
+              <option value="ti-device-mobile-off">Sem celular</option>
+              <option value="ti-brain">Estudo</option>
+              <option value="ti-chart-line">Negócio</option>
+            </select>
+            <button class="btn-sm" onclick="addHabit()"><i class="ti ti-plus"></i></button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- BOTTOM NAV MOBILE -->
+<nav class="bottom-nav" id="bottom-nav">
+  <button class="bn-item active" onclick="showPage('hoje')" id="bn-hoje"><i class="ti ti-sun"></i><span>Hoje</span></button>
+  <button class="bn-item" onclick="showPage('semana')" id="bn-semana"><i class="ti ti-calendar-week"></i><span>Semana</span></button>
+  <button class="bn-item" onclick="showPage('pomodoro')" id="bn-pomodoro"><i class="ti ti-clock"></i><span>Pomodoro</span></button>
+  <button class="bn-item" onclick="showPage('treino')" id="bn-treino"><i class="ti ti-run"></i><span>Treino</span></button>
+  <button class="bn-item" onclick="showPage('habitos')" id="bn-habitos"><i class="ti ti-repeat"></i><span>Hábitos</span></button>
+</nav>
 
 <script>
 const DAYS=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
@@ -301,19 +409,18 @@ const todayIdx=now.getDay();
 const CIRC=2*Math.PI*70;
 
 const TREINO_PLAN=[
-  {tipo:'corrida',nome:'Corrida leve',detail:'30 min ritmo fácil',icon:'ti-run',color:'blue'},
-  {tipo:'academia',nome:'Academia A',detail:'Musculação — peito/costas',icon:'ti-barbell',color:'purple'},
-  {tipo:'corrida',nome:'Corrida moderada',detail:'4–6 km',icon:'ti-run',color:'blue'},
-  {tipo:'rest',nome:'Descanso',detail:'Recuperação ativa',icon:'ti-bed',color:'gray'},
-  {tipo:'academia',nome:'Academia B',detail:'Musculação — pernas',icon:'ti-barbell',color:'purple'},
+  {tipo:'corrida',nome:'Corrida leve',detail:'30 min fácil',icon:'ti-run',color:'blue'},
+  {tipo:'academia',nome:'Academia A',detail:'Peito/costas',icon:'ti-barbell',color:'purple'},
+  {tipo:'corrida',nome:'Corrida mod.',detail:'4–6 km',icon:'ti-run',color:'blue'},
+  {tipo:'rest',nome:'Descanso',detail:'Recuperação',icon:'ti-bed',color:'gray'},
+  {tipo:'academia',nome:'Academia B',detail:'Pernas',icon:'ti-barbell',color:'purple'},
   {tipo:'corrida',nome:'Corrida longa',detail:'6–10 km',icon:'ti-run',color:'blue'},
-  {tipo:'rest',nome:'Descanso',detail:'Alongamento / yoga',icon:'ti-heart',color:'gray'},
+  {tipo:'rest',nome:'Descanso',detail:'Alongamento',icon:'ti-heart',color:'gray'},
 ];
-
 const NUTRI=[
   {id:'agua',nome:'Água',meta:8,unit:'copos',color:'#185FA5'},
   {id:'proteina',nome:'Proteína',meta:3,unit:'refeições',color:'#1D9E75'},
-  {id:'frutas',nome:'Frutas e verduras',meta:5,unit:'porções',color:'#3B6D11'},
+  {id:'frutas',nome:'Frutas/Verduras',meta:5,unit:'porções',color:'#3B6D11'},
   {id:'junk',nome:'Ultra-processados',meta:0,unit:'',color:'#A32D2D'},
 ];
 
@@ -328,46 +435,59 @@ let state={
   selectedDay:todayIdx,habitId:5,taskId:1,
   treinoDone:{},corridaLog:[],nutriLog:{},
 };
-
 let pomoTimer=null,pomoRunning=false,pomoSec=25*60,pomoTotal=25*60,pomoMode='foco';
 let audioCtx=null;
 
 function save(){try{localStorage.setItem('gledsonos',JSON.stringify(state))}catch(e){}}
 function load(){try{const d=localStorage.getItem('gledsonos');if(d)state={...state,...JSON.parse(d)}}catch(e){}}
 
+function isMobile(){return window.innerWidth<=680}
+
+function toggleSidebar(){
+  const s=document.getElementById('sidebar');
+  const o=document.getElementById('overlay');
+  s.classList.toggle('open');
+  o.classList.toggle('show');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
 function showPage(p){
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.bn-item').forEach(x=>x.classList.remove('active'));
   document.getElementById('page-'+p).classList.add('active');
-  document.getElementById('nav-'+p).classList.add('active');
+  if(document.getElementById('nav-'+p)) document.getElementById('nav-'+p).classList.add('active');
+  if(document.getElementById('bn-'+p)) document.getElementById('bn-'+p).classList.add('active');
   const t={hoje:'Hoje',semana:'Semana',pomodoro:'Pomodoro',treino:'Treino & Nutrição',habitos:'Hábitos'};
   document.getElementById('page-title').textContent=t[p];
-  if(p==='semana')renderWeek();
-  if(p==='habitos')renderHabits();
-  if(p==='hoje')renderToday();
-  if(p==='treino')renderTreino();
-  if(p==='pomodoro')checkNotifBar();
+  if(isMobile()) closeSidebar();
+  if(p==='semana') renderWeek();
+  if(p==='habitos') renderHabits();
+  if(p==='hoje') renderToday();
+  if(p==='treino') renderTreino();
+  if(p==='pomodoro') checkNotifBar();
 }
 
 function checkNotifBar(){
-  if('Notification' in window&&Notification.permission==='default')
-    document.getElementById('notif-bar').style.display='flex';
-  else document.getElementById('notif-bar').style.display='none';
+  const bar=document.getElementById('notif-bar');
+  if('Notification' in window&&Notification.permission==='default') bar.style.display='flex';
+  else bar.style.display='none';
 }
 function requestNotif(){
   Notification.requestPermission().then(()=>document.getElementById('notif-bar').style.display='none');
 }
 function sendNotif(title,body){
-  try{if('Notification' in window&&Notification.permission==='granted')new Notification(title,{body})}catch(e){}
+  try{if('Notification' in window&&Notification.permission==='granted') new Notification(title,{body})}catch(e){}
 }
-
 function playSound(type){
   try{
-    if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
     const ctx=audioCtx;
     const cfg=type==='done'?{notes:[523,659,784,1047],times:[0,.15,.3,.45]}
-      :type==='break'?{notes:[784,659,523],times:[0,.2,.4]}
-      :{notes:[440],times:[0]};
+      :type==='break'?{notes:[784,659,523],times:[0,.2,.4]}:{notes:[440],times:[0]};
     cfg.notes.forEach((freq,i)=>{
       const o=ctx.createOscillator(),g=ctx.createGain();
       o.connect(g);g.connect(ctx.destination);
@@ -407,28 +527,26 @@ function addTask(){
 }
 function toggleTask(id){const t=state.tasks.find(x=>x.id===id);if(t)t.done=!t.done;save();renderToday();}
 function deleteTask(id){state.tasks=state.tasks.filter(x=>x.id!==id);save();renderToday();}
-
 function renderToday(){
   renderFoco();
   const tt=state.tasks.filter(t=>t.day===todayIdx);
   const done=tt.filter(t=>t.done).length,total=tt.length;
-  document.getElementById('stat-done').innerHTML=`${done}<span style="font-size:14px;color:var(--txt3)">/${total}</span>`;
+  document.getElementById('stat-done').innerHTML=`${done}<span style="font-size:13px;color:var(--txt3)">/${total}</span>`;
   document.getElementById('prog-fill').style.width=total?Math.round(done/total*100)+'%':'0%';
   document.getElementById('stat-pomos').textContent=state.pomoCount;
   const hd=state.habits.filter(h=>h.days[todayIdx]).length;
-  document.getElementById('stat-hab').innerHTML=`${hd}<span style="font-size:14px;color:var(--txt3)">/${state.habits.length}</span>`;
-  const tp=TREINO_PLAN[todayIdx];
-  const td=state.treinoDone[todayIdx];
-  document.getElementById('stat-treino').innerHTML=tp?(td?`<span style="color:var(--accent)">✓ ${tp.nome}</span>`:`<span style="color:var(--txt2)">${tp.nome}</span>`):'—';
+  document.getElementById('stat-hab').innerHTML=`${hd}<span style="font-size:13px;color:var(--txt3)">/${state.habits.length}</span>`;
+  const tp=TREINO_PLAN[todayIdx];const td=state.treinoDone[todayIdx];
+  document.getElementById('stat-treino').innerHTML=tp?(td?`<span style="color:var(--accent)">✓ ${tp.nome}</span>`:`<span>${tp.nome}</span>`):'—';
   const cats={negocio:'Negócio',rotina:'Rotina',exercicio:'Exercício',alimentacao:'Alimentação'};
   const c=document.getElementById('tarefas-hoje');
-  if(!tt.length){c.innerHTML='<div class="empty-state">Nenhuma tarefa. Adicione abaixo.</div>';return;}
+  if(!tt.length){c.innerHTML='<div class="empty-state">Sem tarefas. Adicione abaixo.</div>';return;}
   c.innerHTML=tt.map(t=>`
     <div class="task-item" onclick="toggleTask(${t.id})">
       <div class="p-dot p-${t.pri}"></div>
       <div class="task-cb ${t.done?'done':''}"><i class="ti ti-check"></i></div>
       <div class="task-label ${t.done?'done':''}">${t.text}</div>
-      <span class="tag ${t.pri==='alta'?'tag-red':t.pri==='media'?'tag-amber':'tag-green'}">${cats[t.cat]||t.cat}</span>
+      <span class="tag ${t.pri==='alta'?'tag-red':t.pri==='media'?'tag-amber':'tag-green'}" style="flex-shrink:0">${cats[t.cat]||t.cat}</span>
       <button class="del-btn" onclick="event.stopPropagation();deleteTask(${t.id})"><i class="ti ti-x"></i></button>
     </div>`).join('');
 }
@@ -488,7 +606,7 @@ function togglePomo(){
         if(pomoMode==='foco'){
           state.pomoCount++;save();
           playSound('done');
-          sendNotif('Pomodoro concluído! 🎯',`Sessão finalizada. ${state.pomoCount} pomodoros hoje.`);
+          sendNotif('Pomodoro concluído! 🎯',`${state.pomoCount} pomodoros hoje.`);
           document.getElementById('pomo-status').textContent='Sessão concluída! ✓';
         }else{
           playSound('break');
@@ -514,24 +632,24 @@ function renderPomoCounter(){
 }
 
 function renderTreino(){
-  const colorMap={blue:['var(--blue-l)','var(--blue)'],purple:['var(--purple-l)','var(--purple)'],gray:['var(--bg2)','var(--txt3)']};
+  const cm={blue:['var(--blue-l)','var(--blue)'],purple:['var(--purple-l)','var(--purple)'],gray:['var(--bg2)','var(--txt3)']};
   document.getElementById('treino-week-grid').innerHTML=TREINO_PLAN.map((t,i)=>{
     const done=state.treinoDone[i],isRest=t.tipo==='rest';
-    const [bg,clr]=colorMap[t.color];
+    const [bg,clr]=cm[t.color];
     return `<div class="treino-slot ${done?'done':''} ${isRest?'rest':''}" ${!isRest?`onclick="toggleTreino(${i})"`:''}
       style="${done?'':'background:'+bg}">
-      <i class="ti ${t.icon}" style="font-size:20px;color:${done?'var(--accent)':clr}"></i>
-      <div style="font-size:10px;color:var(--txt3);margin-top:3px">${DAYS[i]}</div>
+      <i class="ti ${t.icon}" style="font-size:18px;color:${done?'var(--accent)':clr}"></i>
+      <div style="font-size:9px;color:var(--txt3);margin-top:2px">${DAYS[i]}</div>
       <div class="treino-slot-name">${t.nome}</div>
       <div class="treino-slot-detail">${t.detail}</div>
-      ${!isRest?`<div style="margin-top:5px"><span class="tag ${done?'tag-green':'tag-blue'}">${done?'Feito':'Pendente'}</span></div>`:''}
+      ${!isRest?`<div style="margin-top:4px"><span style="font-size:9px;font-weight:500;color:${done?'var(--accent-d)':'var(--blue)'}">${done?'✓ Feito':'Pendente'}</span></div>`:''}
     </div>`;
   }).join('');
   const km=parseFloat((state.corridaLog||[]).reduce((s,c)=>s+(parseFloat(c.km)||0),0).toFixed(1));
   const gym=Object.keys(state.treinoDone||{}).filter(d=>TREINO_PLAN[d]&&TREINO_PLAN[d].tipo==='academia'&&state.treinoDone[d]).length;
-  document.getElementById('km-total').innerHTML=`${km}<span style="font-size:14px"> km</span>`;
-  document.getElementById('corridas-count').textContent=`${(state.corridaLog||[]).length} saída${(state.corridaLog||[]).length!==1?'s':''} esta semana`;
-  document.getElementById('gym-total').innerHTML=`${gym}<span style="font-size:14px"> treinos</span>`;
+  document.getElementById('km-total').innerHTML=`${km}<span style="font-size:13px"> km</span>`;
+  document.getElementById('corridas-count').textContent=`${(state.corridaLog||[]).length} saída${(state.corridaLog||[]).length!==1?'s':''}`;
+  document.getElementById('gym-total').innerHTML=`${gym}<span style="font-size:13px"> treinos</span>`;
   let streak=0;for(let i=todayIdx;i>=0;i--){if(state.treinoDone[i])streak++;else break;}
   document.getElementById('streak-num').textContent=streak;
   const log=document.getElementById('corridas-log');
@@ -542,7 +660,7 @@ function renderTreino(){
         <span style="font-weight:500">${parseFloat(c.km).toFixed(1)} km</span>
         <span class="tag tag-blue">${DAYS[c.day]}</span>
         <span style="color:var(--txt3);flex:1">${c.nota||''}</span>
-        <button onclick="deleteCorrida(${i})" style="background:none;border:none;cursor:pointer;color:var(--txt3);font-size:12px"><i class="ti ti-x"></i></button>
+        <button onclick="deleteCorrida(${i})" style="background:none;border:none;cursor:pointer;color:var(--txt3);font-size:13px"><i class="ti ti-x"></i></button>
       </div>`).join('');
   }else{log.innerHTML='<div class="empty-state" style="padding:10px 0;font-size:12px">Nenhuma corrida registrada ainda.</div>';}
   renderNutri();
@@ -565,7 +683,7 @@ function renderNutri(){
   document.getElementById('nutri-rows').innerHTML=NUTRI.map(n=>{
     const val=log[n.id]||0;
     const pct=n.meta>0?Math.min(100,Math.round(val/n.meta*100)):val===0?100:0;
-    const label=n.meta>0?`${val}/${n.meta} ${n.unit}`:(val===0?'Nenhum — ótimo!':'Consumido hoje');
+    const label=n.meta>0?`${val}/${n.meta} ${n.unit}`:(val===0?'Nenhum — ótimo!':'Consumido');
     return `<div class="nutrition-row">
       <div class="nutrition-label" style="color:${n.color}">${n.nome}</div>
       <div class="nutrition-bar-wrap"><div class="nutrition-bar-fill" style="width:${pct}%;background:${n.color}"></div></div>
@@ -573,7 +691,7 @@ function renderNutri(){
     </div>`;
   }).join('');
   document.getElementById('nutri-btns').innerHTML=NUTRI.map(n=>`
-    <button class="btn-ghost" onclick="incrNutri('${n.id}')" style="font-size:11px;padding:5px 10px">
+    <button class="btn-ghost" onclick="incrNutri('${n.id}')" style="font-size:11px;padding:6px 10px">
       <i class="ti ti-plus"></i> ${n.nome}
     </button>`).join('');
 }
@@ -598,20 +716,20 @@ function renderHabits(){
   if(!state.habits.length){l.innerHTML='<div class="empty-state">Nenhum hábito cadastrado.</div>';return;}
   l.innerHTML=state.habits.map(h=>`
     <div class="habit-row">
-      <div style="width:30px;height:30px;border-radius:var(--rad);background:var(--accent-l);display:flex;align-items:center;justify-content:center">
-        <i class="ti ${h.icon}" style="color:var(--accent);font-size:15px"></i>
+      <div style="width:32px;height:32px;border-radius:var(--rad);background:var(--accent-l);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <i class="ti ${h.icon}" style="color:var(--accent);font-size:16px"></i>
       </div>
-      <div style="flex:1;font-size:13px;font-weight:500;color:var(--txt)">${h.name}</div>
-      <div style="display:flex;gap:4px">
+      <div style="flex:1;font-size:13px;font-weight:500;color:var(--txt);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${h.name}</div>
+      <div style="display:flex;gap:4px;flex-shrink:0">
         ${DAYS.map((d,i)=>`<div class="habit-day ${h.days[i]?'done':''}" onclick="toggleHabit(${h.id},${i})" title="${DAYS_FULL[i]}">${d[0]}</div>`).join('')}
       </div>
-      <button class="del-btn" onclick="deleteHabit(${h.id})"><i class="ti ti-trash"></i></button>
+      <button onclick="deleteHabit(${h.id})" style="background:none;border:none;cursor:pointer;color:var(--txt3);font-size:14px;flex-shrink:0;padding:4px"><i class="ti ti-trash"></i></button>
     </div>`).join('');
 }
 
 function init(){
   load();
-  document.getElementById('current-date').textContent=now.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('current-date').textContent=now.toLocaleDateString('pt-BR',{weekday:'short',day:'numeric',month:'short'});
   renderToday();renderPomoCounter();updatePomo();
 }
 init();
