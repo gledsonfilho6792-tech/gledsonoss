@@ -3,8 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>GledsonOS</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<title>GC OS</title>
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMUQ5RTc1Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzBBNUM0NCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMTIiIGZpbGw9InVybCgjZykiLz4KICA8dGV4dCB4PSI0MiIgeT0iMzcwIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssSGVsdmV0aWNhIE5ldWUsc2Fucy1zZXJpZiIKICAgICAgICBmb250LXNpemU9IjMyMCIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0id2hpdGUiIG9wYWNpdHk9IjAuOTUiPkc8L3RleHQ+CiAgPHBhdGggZD0iTTMzMCA1OCBMMjU4IDIzOCBMMzA2IDIzOCBMMjE4IDQ1NCBMMzk0IDI0NCBMMzQwIDI0NCBMNDEyIDU4WiIKICAgICAgICBmaWxsPSJ3aGl0ZSIgb3BhY2l0eT0iMC45MyIvPgo8L3N2Zz4=">
+  <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMUQ5RTc1Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzBBNUM0NCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMTIiIGZpbGw9InVybCgjZykiLz4KICA8dGV4dCB4PSI0MiIgeT0iMzcwIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssSGVsdmV0aWNhIE5ldWUsc2Fucy1zZXJpZiIKICAgICAgICBmb250LXNpemU9IjMyMCIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0id2hpdGUiIG9wYWNpdHk9IjAuOTUiPkc8L3RleHQ+CiAgPHBhdGggZD0iTTMzMCA1OCBMMjU4IDIzOCBMMzA2IDIzOCBMMjE4IDQ1NCBMMzk0IDI0NCBMMzQwIDI0NCBMNDEyIDU4WiIKICAgICAgICBmaWxsPSJ3aGl0ZSIgb3BhY2l0eT0iMC45MyIvPgo8L3N2Zz4=">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="GC OS">
+  <meta name="theme-color" content="#1D9E75">
+  <script>
+    if('serviceWorker' in navigator){
+      const manifest = {
+        name:'GC OS',short_name:'GC OS',
+        start_url:'.',display:'standalone',
+        background_color:'#1D9E75',theme_color:'#1D9E75',
+        icons:[{src:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMUQ5RTc1Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzBBNUM0NCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMTIiIGZpbGw9InVybCgjZykiLz4KICA8dGV4dCB4PSI0MiIgeT0iMzcwIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssSGVsdmV0aWNhIE5ldWUsc2Fucy1zZXJpZiIKICAgICAgICBmb250LXNpemU9IjMyMCIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0id2hpdGUiIG9wYWNpdHk9IjAuOTUiPkc8L3RleHQ+CiAgPHBhdGggZD0iTTMzMCA1OCBMMjU4IDIzOCBMMzA2IDIzOCBMMjE4IDQ1NCBMMzk0IDI0NCBMMzQwIDI0NCBMNDEyIDU4WiIKICAgICAgICBmaWxsPSJ3aGl0ZSIgb3BhY2l0eT0iMC45MyIvPgo8L3N2Zz4=',sizes:'512x512',type:'image/svg+xml'}]
+      };
+      const blob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
+      const url=URL.createObjectURL(blob);
+      const link=document.createElement('link');
+      link.rel='manifest';link.href=url;
+      document.head.appendChild(link);
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
@@ -291,7 +313,7 @@ textarea.f-input{resize:vertical;min-height:100px;line-height:1.6;font-family:in
 
 <div class="app">
   <div class="sidebar" id="sidebar">
-    <div class="logo"><i class="ti ti-bolt"></i> GledsonOS</div>
+    <div class="logo"><i class="ti ti-bolt"></i> GC OS</div>
     <div class="nav-section">Principal</div>
     <button class="nav-item active" onclick="showPage('home')" id="nav-home"><i class="ti ti-home-2"></i> Home</button>
     <button class="nav-item" onclick="showPage('pomodoro')" id="nav-pomodoro"><i class="ti ti-clock-hour-4"></i> Pomodoro</button>
@@ -692,8 +714,8 @@ let state={
 let pomoTimer=null,pomoRunning=false,pomoSec=25*60,pomoTotal=25*60,pomoMode='foco';
 let audioCtx=null;
 
-function save(){try{localStorage.setItem('gledsonos3',JSON.stringify(state))}catch(e){}}
-function load(){try{const d=localStorage.getItem('gledsonos3');if(d)state={...state,...JSON.parse(d)}}catch(e){}}
+function save(){try{localStorage.setItem('gcos',JSON.stringify(state))}catch(e){}}
+function load(){try{const d=localStorage.getItem('gcos');if(d)state={...state,...JSON.parse(d)}}catch(e){}}
 
 /* ─── AUDIO ─── */
 function getAudioCtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx;}
@@ -875,7 +897,7 @@ function togglePomo(){
     document.getElementById('pomo-btn-label').textContent='Continuar';
     document.getElementById('pomo-play-icon').className='ti ti-player-play';
     document.getElementById('pomo-status').textContent='Pausado';
-    document.title='GledsonOS';
+    document.title='GC OS';
   }else{
     pomoRunning=true;
     document.getElementById('pomo-btn-label').textContent='Pausar';
@@ -885,7 +907,7 @@ function togglePomo(){
       pomoSec--;updatePomoDisplay();
       if(pomoSec<=0){
         clearInterval(pomoTimer);pomoTimer=null;pomoRunning=false;
-        document.title='GledsonOS';
+        document.title='GC OS';
         document.getElementById('pomo-btn-label').textContent='Iniciar';
         document.getElementById('pomo-play-icon').className='ti ti-player-play';
         if(pomoMode==='foco'){
@@ -913,7 +935,7 @@ function resetPomo(){
   document.getElementById('pomo-btn-label').textContent='Iniciar';
   document.getElementById('pomo-play-icon').className='ti ti-player-play';
   document.getElementById('pomo-status').textContent='Pronto para focar';
-  document.title='GledsonOS';
+  document.title='GC OS';
 }
 function renderPomoCounter(){
   const shown=state.pomoCount%4;
