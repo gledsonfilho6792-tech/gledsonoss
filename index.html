@@ -1207,7 +1207,7 @@ function renderNotas(){
 /* ─── INIT ─── */
 function setGreeting(){
   const h=now.getHours();
-  const g=h<12?'Bom dia':'h<18?Boa tarde':'Boa noite';
+  
   const greet=h<12?'Bom dia':h<18?'Boa tarde':'Boa noite';
   document.getElementById('home-greeting-txt').textContent=`${greet}, Gledson 👋`;
   document.getElementById('home-greeting-sub').textContent=now.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
